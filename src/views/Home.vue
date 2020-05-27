@@ -13,6 +13,12 @@ export default {
   name: "Home",
   components: {
     HelloWorld
+  },
+  mounted() {
+    alert(1);
+    console.log(22);
+    console.error(22);
+    console.warn(22);
   }
 };
 </script>

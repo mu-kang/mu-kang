@@ -1,12 +1,11 @@
-const path = require('path')
-const UglifyPlugin = require('uglifyjs-webpack-plugin')
+const path = require("path");
 module.exports = {
   // 基本路径
   /* 部署生产环境和开发环境下的URL：可对当前环境进行区分，baseUrl 从 Vue CLI 3.3 起已弃用，要使用publicPath */
   /* baseUrl: process.env.NODE_ENV === 'production' ? './' : '/' */
-  publicPath: process.env.NODE_ENV === 'production' ? './' : './',
+  publicPath: process.env.NODE_ENV === "production" ? "./" : "./",
   // 输出文件目录
-  outputDir: 'dist',
+  outputDir: "dist",
   // eslint-loader 是否在保存的时候检查
   lintOnSave: false,
   // use the full build with in-browser compiler?
@@ -18,73 +17,61 @@ module.exports = {
   // webpack配置
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   chainWebpack: () => {},
-  configureWebpack: config => {
-    if (process.env.NODE_ENV === 'production') {
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === "production") {
       // 为生产环境修改配置...
-      config.mode = 'production'
+      config.mode = "production";
       // 将每个依赖包打包成单独的js文件
       var optimization = {
-        runtimeChunk: 'single',
+        runtimeChunk: "single",
         splitChunks: {
-          chunks: 'all',
+          chunks: "all",
           maxInitialRequests: Infinity,
           minSize: 20000, // 依赖包超过20000bit将被单独打包
           cacheGroups: {
             vendor: {
               test: /[\\/]node_modules[\\/]/,
-              name (module) {
+              name(module) {
                 // get the name. E.g. node_modules/packageName/not/this/part.js
                 // or node_modules/packageName
                 const packageName = module.context.match(
                   /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-                )[1]
+                )[1];
                 // npm package names are URL-safe, but some servers don't like @ symbols
-                return `npm.${packageName.replace('@', '')}`
-              }
-            }
-          }
+                return `npm.${packageName.replace("@", "")}`;
+              },
+            },
+          },
         },
-        minimizer: [
-          new UglifyPlugin({
-            uglifyOptions: {
-              compress: {
-                warnings: false,
-                drop_console: true, // console
-                drop_debugger: false,
-                pure_funcs: ['console.log'] // 移除console
-              }
-            }
-          })
-        ]
-      }
+      };
       Object.assign(config, {
-        optimization
-      })
+        optimization,
+      });
     } else {
       // 为开发环境修改配置...
-      config.mode = 'development'
+      config.mode = "development";
       var optimization2 = {
-        runtimeChunk: 'single',
+        runtimeChunk: "single",
         splitChunks: {
-          chunks: 'all',
+          chunks: "all",
           maxInitialRequests: Infinity,
           minSize: 20000, // 依赖包超过20000bit将被单独打包
           cacheGroups: {
             vendor: {
               test: /[\\/]node_modules[\\/]/,
-              name (module) {
+              name(module) {
                 // get the name. E.g. node_modules/packageName/not/this/part.js
                 // or node_modules/packageName
                 const packageName = module.context.match(
                   /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-                )[1]
+                )[1];
                 // npm package names are URL-safe, but some servers don't like @ symbols
-                return `npm.${packageName.replace('@', '')}`
-              }
-            }
-          }
-        }
-      }
+                return `npm.${packageName.replace("@", "")}`;
+              },
+            },
+          },
+        },
+      };
     }
     Object.assign(config, {
       // 开发生产共同配置
@@ -96,17 +83,17 @@ module.exports = {
       //   'vuex': 'Vuex'
       // } // 防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖(用于csdn引入)
       resolve: {
-        extensions: ['.js', '.vue', '.json'], // 文件优先解析后缀名顺序
+        extensions: [".js", ".vue", ".json"], // 文件优先解析后缀名顺序
         alias: {
-          '@': path.resolve(__dirname, './src'),
-          '@c': path.resolve(__dirname, './src/components'),
-          '@v': path.resolve(__dirname, './src/views'),
-          '@u': path.resolve(__dirname, './src/utils')
+          "@": path.resolve(__dirname, "./src"),
+          "@c": path.resolve(__dirname, "./src/components"),
+          "@v": path.resolve(__dirname, "./src/views"),
+          "@u": path.resolve(__dirname, "./src/utils"),
         }, // 别名配置
-        plugins: []
+        plugins: [],
       },
-      optimization: optimization2
-    })
+      optimization: optimization2,
+    });
   },
   // vue-loader 配置项
   // https://vue-loader.vuejs.org/en/options.html
@@ -122,11 +109,11 @@ module.exports = {
     // css预设器配置项
     loaderOptions: {},
     // 启用 CSS modules for all css / pre-processor files.
-    modules: false
+    modules: false,
   },
   // use thread-loader for babel & TS in production build
   // enabled by default if the machine has more than 1 cores
-  parallel: require('os').cpus().length > 1,
+  parallel: require("os").cpus().length > 1,
   // 是否启用dll
   // See https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#dll-mode
   // dll: false,
@@ -143,19 +130,19 @@ module.exports = {
     hotOnly: false,
     /* 使用代理 */
     proxy: {
-      '/api': {
+      "/api": {
         /* 目标代理服务器地址 */
-        target: 'http://sxgcjxgl.com',
+        target: "http://sxgcjxgl.com",
         /* 允许跨域 */
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          '^/api': '/index.php/api'
-        }
-      }
+          "^/api": "/index.php/api",
+        },
+      },
     },
-    before: () => {}
+    before: () => {},
   },
   // 第三方插件配置
-  pluginOptions: {}
-}
+  pluginOptions: {},
+};
