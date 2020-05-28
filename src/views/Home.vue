@@ -15,7 +15,6 @@ export default {
     HelloWorld
   },
   mounted() {
-    alert(1);
     console.log(22);
     console.error(22);
     console.warn(22);
